@@ -26,6 +26,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 
 
 public class HSedit {
@@ -56,7 +57,7 @@ public class HSedit {
 	Box fadebox = Box.createVerticalBox();
 	Box commandbox = Box.createVerticalBox();
 	Box playVolsbox = Box.createVerticalBox();
-	public static final String version = "1.2.4";
+	public static final String version = "1.2.5";
 	
 	public HSedit(HSshowfile showfile, String filePath){
 		
@@ -132,7 +133,7 @@ public class HSedit {
 				int retval = chooser.showSaveDialog(null);
 				updateSF();
 				if(retval==JFileChooser.APPROVE_OPTION){
-					File f = new File(chooser.getSelectedFile().getAbsolutePath());
+					File f = new File(chooser.getSelectedFile().getAbsolutePath()+".hssf");
 					myFilePath = f.getAbsolutePath();
 					me.save();
 				}
@@ -165,6 +166,18 @@ public class HSedit {
 		loadShow.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
+				chooser.setFileFilter(new FileFilter(){
+					public boolean accept(File f) {
+						if(f.getAbsolutePath().endsWith(".hssf")){
+							return true;
+						}
+						return false;
+					}
+					public String getDescription() {
+						return "The one that only accepts.hssf";
+					}
+					
+				});
 			    int returnVal = chooser.showOpenDialog(null);
 			    if(returnVal == JFileChooser.APPROVE_OPTION) {
 			    	try{
@@ -190,7 +203,7 @@ public class HSedit {
 					JFileChooser chooser = new JFileChooser();
 					int retval = chooser.showSaveDialog(null);
 					if(retval==JFileChooser.APPROVE_OPTION){
-						File f = new File(chooser.getSelectedFile().getAbsolutePath());
+						File f = new File(chooser.getSelectedFile().getAbsolutePath()+".hssf");
 						myFilePath = f.getAbsolutePath();
 						me.save();
 					}
