@@ -114,7 +114,7 @@ public class HSclip {
 	}
 	public void shiftVolume(int instanceNumber, int millis, double finalVol){
 		try{volumeControl.get(instanceNumber).breakFade();
-		}catch(Exception e){e.printStackTrace();}
+		}catch(Exception e){}
 		HSvolume v = new HSvolume(gainControl.get(instanceNumber), millis, (float) finalVol);
 		volumeControl.set(instanceNumber, v);
 	}

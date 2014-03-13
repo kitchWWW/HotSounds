@@ -17,6 +17,7 @@ public class HSsound {
 	ArrayList<Integer> playing;
 	volatile double GrandMaster;			//volume, between 0 and 1
 	String file;
+	String version = "1.0.4";
 	
 	public HSsound(){
 		GrandMaster = 1;
@@ -38,7 +39,7 @@ public class HSsound {
 	 * @throws Exception 
 	 */
 	public int addClip(String url) throws Exception{
-		if(url.endsWith(".wav")||url.endsWith(".aif")){
+		if(url.endsWith(".wav")||url.endsWith(".aif")||url.endsWith(".aiff")){
 			HSclip clip = new HSclip(file, url);
 			clips.add(clip);
 			playing.add(0);

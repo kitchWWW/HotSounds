@@ -11,14 +11,17 @@ import HSengine.HSsound;
 public class HSkeylist implements KeyListener {
 	
 	HSsound ss;
-	ArrayList<Integer> cn;
-	ArrayList<String> keys;
-	ArrayList<Integer> keyCodes;
-	public static final int FadeCurrentSound = -1000;
+	public static final int CommandStart = -1000;
 	public static final int KillAllSound = -2;
 	public static final int ActivePop = -3;
 	public static final int ActiveLive = -4;
 	public static final int KillActiveSound = -5;
+	public static final int ScrollControlVolume = -6;
+	//scrolling still needs to be implemented, but oh well.
+	public volatile boolean scrolling = false;
+	ArrayList<String> keys;
+	ArrayList<Integer> cn;
+	ArrayList<Integer> keyCodes;
 	ArrayList<Integer> activeClip;
 	ArrayList<Integer> activeInstance;
 	int activePos;
@@ -26,8 +29,10 @@ public class HSkeylist implements KeyListener {
 	HSshow show;
 	ArrayList<String> names;
 	ArrayList<Double> playVols;
+	ArrayList<HScommand> commands;
 	
-	public HSkeylist(HSsound SoundSyst, ArrayList<Integer> clipnumb, ArrayList<String> keystopress, HSshow showGUI, ArrayList<String> nam, ArrayList<Double> fades, ArrayList<Double> volumes){
+	
+	public HSkeylist(HSsound SoundSyst, ArrayList<Integer> clipnumb, ArrayList<String> keystopress, HSshow showGUI, ArrayList<String> nam, ArrayList<Double> fades, ArrayList<Double> volumes, ArrayList<HScommand> coms){
 		names = new ArrayList<>();
 		for(int i = 0; i<clipnumb.size(); i++){
 			if(clipnumb.get(i)>=0){
@@ -43,6 +48,7 @@ public class HSkeylist implements KeyListener {
 		activeClip = new ArrayList<>();
 		activeInstance = new ArrayList<>();
 		keyCodes = new ArrayList<>();
+		commands = coms;
 		for(int i = 0; i<keys.size(); i++){
 			if(keys.get(i).length()==1){
 				int ch = (int)(keys.get(i).toCharArray()[0]);
@@ -69,7 +75,6 @@ public class HSkeylist implements KeyListener {
 		try{
 		if(keyCodes.indexOf(e.getKeyCode())!=-1){
 			int doing = cn.get(keyCodes.indexOf(e.getKeyCode()));	
-			//positive numbers are sounds, negative numbers are commands to do with the active sound, fades are #s below 1000
 			if(doing>=0){
 				int d = (int)(fadeUps.get(doing)*1000);
 				double vol = (double)(playVols.get(doing));
@@ -89,8 +94,17 @@ public class HSkeylist implements KeyListener {
 				activePos = activeClip.size();
 				activeClip.add(doing);
 				show.updateActive(names.get(activeClip.get(activePos)) +"  "+activeInstance.get(activePos));
-			}else if(doing < FadeCurrentSound){
-				ss.fade(activeClip.get(activePos), activeInstance.get(activePos), Math.abs(doing+FadeCurrentSound), 0);
+			}else if(doing <= CommandStart){
+				HScommand command = commands.get(Math.abs(doing - CommandStart));
+				if(command.mytype == HScommand.fade){
+					System.out.println(command);
+					System.out.println("fade");
+					ss.fade(activeClip.get(activePos), activeInstance.get(activePos), command.t(), 0);
+				}
+				else if(command.mytype == HScommand.move){
+					System.out.println("move");
+					ss.fade(activeClip.get(activePos), activeInstance.get(activePos), command.t(), command.vol());
+				}
 			}else if(doing == KillAllSound){
 				show.updateActive("Killing...");
 				ss.dearGodKillAllTheNoiseNow();
@@ -110,11 +124,20 @@ public class HSkeylist implements KeyListener {
 				show.updateActive(names.get(activeClip.get(activePos)) +"  "+activeInstance.get(activePos));
 			}else if(doing == KillActiveSound){
 				ss.setVolume(activeClip.get(activePos), activeInstance.get(activePos), 0);
+			}else if(doing == ScrollControlVolume){
+				scrolling = true;
 			}
 		}
 		}catch(Exception exc){
 			JOptionPane.showMessageDialog(null, "Something broke, sorry... \n" + exc.getMessage());
+			exc.printStackTrace();
 		}
 	}
-	public void keyReleased(KeyEvent e) {}
+	public void keyReleased(KeyEvent e) {
+		if(keyCodes.indexOf(e.getKeyCode())!=-1){
+			if(cn.get(keyCodes.indexOf(e.getKeyCode())) == ScrollControlVolume){
+				scrolling = false;
+			}
+		}
+	}
 }

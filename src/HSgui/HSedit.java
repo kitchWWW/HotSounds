@@ -57,7 +57,7 @@ public class HSedit {
 	Box fadebox = Box.createVerticalBox();
 	Box commandbox = Box.createVerticalBox();
 	Box playVolsbox = Box.createVerticalBox();
-	public static final String version = "1.2.5";
+	public static final String version = "1.3.1";
 	
 	public HSedit(HSshowfile showfile, String filePath){
 		
@@ -174,7 +174,7 @@ public class HSedit {
 						return false;
 					}
 					public String getDescription() {
-						return "The one that only accepts.hssf";
+						return "only .hssf";
 					}
 					
 				});

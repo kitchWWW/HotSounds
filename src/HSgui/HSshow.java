@@ -20,6 +20,7 @@ public class HSshow {
 	ArrayList<String> commands;
 	ArrayList<Double> fadeUps; 
 	ArrayList<Double> playVols;
+	ArrayList<HScommand> commandsWithPerams;
 	HSshowfile sf;
 	JLabel active;
 	String myFilePath;
@@ -35,6 +36,7 @@ public class HSshow {
 		commands = sf.getCommands();
 		fadeUps = new ArrayList<>();
 		playVols = new ArrayList<>();
+		commandsWithPerams =  new ArrayList<>();
 		for(String s: sf.getFadeUps()){
 			try{
 				fadeUps.add(Double.parseDouble(s));
@@ -69,8 +71,40 @@ public class HSshow {
 				}catch(Exception e){
 					d = 5;
 				}
-				d = d*1000;
-				cn.add(HSkeylist.FadeCurrentSound - (int) d);
+				HScommand com;
+				try {
+					com = new HScommand(d);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					System.out.println("You done give me a set of bad perams");
+					com = null;
+				}
+				commandsWithPerams.add(com);
+				cn.add(HSkeylist.CommandStart - Math.abs(commandsWithPerams.indexOf(com)));
+			}
+			if(commands.get(i).startsWith("#move")){
+				String m = commands.get(i);
+				String doubl = m.substring(m.indexOf(":")+1);
+				doubl = doubl.substring(0, doubl.indexOf(" to:"));
+				double d;
+				try{
+					d = Double.parseDouble(doubl);
+				}catch(Exception e){
+					d = 5;
+				}
+				String time = m.substring(m.indexOf("to:")+3);
+				double t;
+				try{
+					t = Double.parseDouble(time);
+				}catch(Exception e){
+					t = .5;
+				}
+				HScommand com;
+				try {
+					com = new HScommand(d,t);
+				} catch (Exception e1) {e1.printStackTrace(); com = null;}
+				commandsWithPerams.add(com);
+				cn.add(HSkeylist.CommandStart - Math.abs(commandsWithPerams.indexOf(com)));
 			}	
 		}
 		for(int i = 0; i< urls.size(); i++){
@@ -161,7 +195,7 @@ public class HSshow {
 		main.add(bigger, BorderLayout.CENTER);
 		main.add(showedit, BorderLayout.SOUTH);
 	//then add the thing to make the entire thing work:	
-		showedit.addKeyListener(new HSkeylist(ss,cn,keys,this,names,fadeUps,playVols));
+		showedit.addKeyListener(new HSkeylist(ss,cn,keys,this,names,fadeUps,playVols,commandsWithPerams));
 		main.setLocationRelativeTo(null);
 		main.pack();
 		main.setVisible(true);
