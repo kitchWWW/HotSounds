@@ -201,7 +201,7 @@ public class HSshow {
 		main.add(showedit, BorderLayout.SOUTH);
 	//then add the thing to make the entire thing work:	
 		showedit.addKeyListener(new HSkeylist(ss,cn,keys,this,names,fadeUps,playVols,commandsWithPerams));
-		main.setLocationRelativeTo(null);
+		main.setLocation(150,150);
 		main.pack();
 		main.setVisible(true);
 	}

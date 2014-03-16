@@ -57,7 +57,7 @@ public class HSedit {
 	Box fadebox = Box.createVerticalBox();
 	Box commandbox = Box.createVerticalBox();
 	Box playVolsbox = Box.createVerticalBox();
-	public static final String version = "1.4.0";
+	public static final String version = "1.4.1";
 	
 	public HSedit(HSshowfile showfile, String filePath){
 		
@@ -276,7 +276,7 @@ public class HSedit {
 		big.add(editAreaSP);
 		main.add(big, BorderLayout.CENTER);
 		main.pack();
-		main.setLocationRelativeTo(null);
+		main.setLocation(100, 100);
 		main.setVisible(true);
 	}
 	protected void removeEmpties(){

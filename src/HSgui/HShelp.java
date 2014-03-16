@@ -52,6 +52,7 @@ public class HShelp {
 		big.add(new JLabel("   "));
 		main.add(big);
 		main.pack();
+		main.setLocation(600,100);
 		main.setVisible(true);
 	}
 
