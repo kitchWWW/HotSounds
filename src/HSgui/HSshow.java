@@ -147,6 +147,9 @@ public class HSshow {
 			fadebox.add(new JLabel(" "));
 			playVolsbox.add(new JLabel(" "));
 		}
+		urlbox.add(new JLabel(" "));
+		fadebox.add(new JLabel(" "));
+		playVolsbox.add(new JLabel(" "));
 		for(String u:urls){
 			urlbox.add(new JLabel(u));
 		}
@@ -159,6 +162,8 @@ public class HSshow {
 		for(String k:keys){
 			keybox.add(new JLabel(k));
 		}
+		namebox.add(new JLabel(" "),commands.size()+2);
+		keybox.add(new JLabel(" "),commands.size()+3);
 	//add in the second empty line	
 		namebox.add(new JLabel(" "));
 		keybox.add(new JLabel(" "));

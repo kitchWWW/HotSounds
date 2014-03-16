@@ -16,7 +16,6 @@ public class HSkeylist implements KeyListener {
 	public static final int ActivePop = -3;
 	public static final int ActiveLive = -4;
 	public static final int KillActiveSound = -5;
-	public static final int ScrollControlVolume = -6;
 	//scrolling still needs to be implemented, but oh well.
 	public volatile boolean scrolling = false;
 	ArrayList<String> keys;
@@ -94,38 +93,38 @@ public class HSkeylist implements KeyListener {
 				activePos = activeClip.size();
 				activeClip.add(doing);
 				show.updateActive(names.get(activeClip.get(activePos)) +"  "+activeInstance.get(activePos));
-			}else if(doing <= CommandStart){
-				HScommand command = commands.get(Math.abs(doing - CommandStart));
-				if(command.mytype == HScommand.fade){
-					System.out.println(command);
-					System.out.println("fade");
-					ss.fade(activeClip.get(activePos), activeInstance.get(activePos), command.t(), 0);
-				}
-				else if(command.mytype == HScommand.move){
-					System.out.println("move");
-					ss.fade(activeClip.get(activePos), activeInstance.get(activePos), command.t(), command.vol());
-				}
-			}else if(doing == KillAllSound){
-				show.updateActive("Killing...");
-				ss.dearGodKillAllTheNoiseNow();
-				ss.reset();
-				activePos = 0;
-				activeClip = new ArrayList<>();
-				activeInstance = new ArrayList<>();
-				show.updateActive("none");
-			}else if(doing == ActivePop){
-				try{
-					activePos--;
-					if(activePos<0){activePos = 0 ;}
+			}else if(activeClip.size()!=0){
+				if(doing <= CommandStart){
+					HScommand command = commands.get(Math.abs(doing - CommandStart));
+					if(command.mytype == HScommand.fade){
+						System.out.println(command);
+						System.out.println("fade");
+						ss.fade(activeClip.get(activePos), activeInstance.get(activePos), command.t(), 0);
+					}
+					else if(command.mytype == HScommand.move){
+						System.out.println("move");
+						ss.fade(activeClip.get(activePos), activeInstance.get(activePos), command.t(), command.vol());
+					}
+				}else if(doing == KillAllSound){
+					show.updateActive("Killing...");
+					ss.dearGodKillAllTheNoiseNow();
+					ss.reset();
+					activePos = 0;
+					activeClip = new ArrayList<>();
+					activeInstance = new ArrayList<>();
+					show.updateActive("none");
+				}else if(doing == ActivePop){
+					try{
+						activePos--;
+						if(activePos<0){activePos = 0 ;}
+						show.updateActive(names.get(activeClip.get(activePos)) +"  "+activeInstance.get(activePos));
+					}catch(Exception emjkl){}
+				}else if(doing == ActiveLive){
+					activePos = activeClip.size()-1;
 					show.updateActive(names.get(activeClip.get(activePos)) +"  "+activeInstance.get(activePos));
-				}catch(Exception emjkl){}
-			}else if(doing == ActiveLive){
-				activePos = activeClip.size()-1;
-				show.updateActive(names.get(activeClip.get(activePos)) +"  "+activeInstance.get(activePos));
-			}else if(doing == KillActiveSound){
-				ss.setVolume(activeClip.get(activePos), activeInstance.get(activePos), 0);
-			}else if(doing == ScrollControlVolume){
-				scrolling = true;
+				}else if(doing == KillActiveSound){
+					ss.setVolume(activeClip.get(activePos), activeInstance.get(activePos), 0);
+				}
 			}
 		}
 		}catch(Exception exc){
@@ -133,11 +132,5 @@ public class HSkeylist implements KeyListener {
 			exc.printStackTrace();
 		}
 	}
-	public void keyReleased(KeyEvent e) {
-		if(keyCodes.indexOf(e.getKeyCode())!=-1){
-			if(cn.get(keyCodes.indexOf(e.getKeyCode())) == ScrollControlVolume){
-				scrolling = false;
-			}
-		}
-	}
+	public void keyReleased(KeyEvent e) {}
 }

@@ -17,7 +17,7 @@ public class HSsound {
 	ArrayList<Integer> playing;
 	volatile double GrandMaster;			//volume, between 0 and 1
 	String file;
-	String version = "1.0.4";
+	String version = "1.0.5";
 	
 	public HSsound(){
 		GrandMaster = 1;
