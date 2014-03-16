@@ -97,17 +97,6 @@ public class HSsound {
 		playing.set(clipNumber,playing.get(clipNumber)+1);
 		return clips.get(clipNumber).newPlayFadeIn(millis, vol);
 	}
-	
-	public void pauseClip(int clipNumber, int instanceNumber){
-		checkClip(clipNumber,instanceNumber);
-		HSclip clip = clips.get(clipNumber);
-		clip.pause(instanceNumber);
-	}
-	public void pauseAll(int clipNumber){
-		for(int i = 0; i<playing.get(clipNumber); i++){
-			clips.get(clipNumber).pause(i);
-		}
-	}
 	public void setVolume(int clipNumber,double volume){
 		checkClip(clipNumber);
 		checkVol(volume);
@@ -126,6 +115,10 @@ public class HSsound {
 		checkClip(clipNumber,instanceNumber);
 		checkVol(volume);
 		clips.get(clipNumber).shiftVolume(instanceNumber, millis, volume);
+	}
+	public void kill(int clipNumber, int instanceNumber){
+		checkClip(clipNumber,instanceNumber);
+		clips.get(clipNumber).kill(instanceNumber);
 	}
 	private void checkClip(int clipNumber) {
 		if(clipNumber>=clips.size()||clipNumber<0){
@@ -149,6 +142,7 @@ public class HSsound {
 			}
 		}
 	}
+	
 	public void reset(){
 		dearGodKillAllTheNoiseNow();
 		playing = new ArrayList<>();

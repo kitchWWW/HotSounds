@@ -56,13 +56,13 @@ public class HSshow {
 				cn.add(HSkeylist.ActiveLive);
 			}if(commands.get(i).startsWith("#last")){
 				cn.add(HSkeylist.ActivePop);
-			}if(commands.get(i).startsWith("#stop")){
+			}if(commands.get(i).startsWith("#kill")){
 				cn.add(HSkeylist.KillActiveSound);
-			}
-			if(commands.get(i).startsWith("#kill")){
-				cn.add(HSkeylist.KillAllSound);
-			}
-			if(commands.get(i).startsWith("#fade")){
+			}if(commands.get(i).startsWith("#mute")){
+				cn.add(HSkeylist.SilenceActiveSound);
+			}if(commands.get(i).startsWith("#reset")){
+				cn.add(HSkeylist.ResetSystem);
+			}if(commands.get(i).startsWith("#fade")){
 				String m = commands.get(i);
 				String doubl = m.substring(m.indexOf(":")+1);
 				double d;

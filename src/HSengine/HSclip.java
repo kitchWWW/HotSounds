@@ -15,7 +15,6 @@ public class HSclip {
 	float fadePerStep;
 	String fileUrl;		//something similar to url, but not quite the same...
 	ArrayList<Clip> clips;
-	ArrayList<Boolean> paused;
 	ArrayList<FloatControl> gainControl;
 	ArrayList<HSvolume> volumeControl;
 	ArrayList<AudioInputStream> streams;
@@ -64,7 +63,7 @@ public class HSclip {
 		//and something to close it up once it is done playing
 		clips.get(ouri).addLineListener(new LineListener() {
 		    public void update(LineEvent myLineEvent) {
-		    	if (myLineEvent.getType() == LineEvent.Type.STOP)
+		    	if (myLineEvent.getType() == LineEvent.Type.STOP ||myLineEvent.getType() == LineEvent.Type.CLOSE)
 		        	clips.get(ouri).close();
 		        	try {streams.get(ouri).close();} catch (IOException e) {e.printStackTrace();}
 		    	}
@@ -94,19 +93,12 @@ public class HSclip {
 		clips.get(ouri).loop(0);
 		clips.get(ouri).addLineListener(new LineListener() {
 		    public void update(LineEvent myLineEvent) {
-		    	if (myLineEvent.getType() == LineEvent.Type.STOP)
+		    	if (myLineEvent.getType() == LineEvent.Type.STOP ||myLineEvent.getType() == LineEvent.Type.CLOSE)
 		        	clips.get(ouri).close();
 		        	try {streams.get(ouri).close();} catch (IOException e) {e.printStackTrace();}
 		    	}
 		    });
 		return ouri;
-	}
-	
-	public void pause(int ouri){
-		clips.get(ouri).stop();
-	}
-	public void resume(int ouri){
-		clips.get(ouri).start();
 	}
 	
 	public void reset(){
@@ -148,7 +140,11 @@ public class HSclip {
 		FloatControl gc = gainControl.get(instanceNumber);
 		gc.setValue((float)vol);
 	}
-
+	public void kill(int instanceNumber){
+		clips.get(instanceNumber).stop();
+		try {
+			streams.get(instanceNumber).close();} catch (IOException e) {e.printStackTrace();}
+	}
 	public void SILENCE(int instanceNumber) {
 		if(volumeControl.get(instanceNumber)!=null){
 			volumeControl.get(instanceNumber).breakFade();
@@ -157,7 +153,6 @@ public class HSclip {
 		FloatControl gainControl = (FloatControl) clips.get(instanceNumber).getControl(FloatControl.Type.MASTER_GAIN);
 		gainControl.setValue(gainControl.getMinimum());
 	}
-
 	public int newPlayFadeIn(int millis, double vol) {
 		final int ouri = clips.size();
 		streams.add(null);
@@ -174,7 +169,7 @@ public class HSclip {
 		volumeControl.add(asdf);
 		clips.get(ouri).addLineListener(new LineListener() {
 		    public void update(LineEvent myLineEvent) {
-		    	if (myLineEvent.getType() == LineEvent.Type.STOP)
+		    	if (myLineEvent.getType() == LineEvent.Type.STOP ||myLineEvent.getType() == LineEvent.Type.CLOSE)
 		        	clips.get(ouri).close();
 		        	try {streams.get(ouri).close();} catch (IOException e) {e.printStackTrace();}
 		    	}

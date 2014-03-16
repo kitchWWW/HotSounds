@@ -12,10 +12,11 @@ public class HSkeylist implements KeyListener {
 	
 	HSsound ss;
 	public static final int CommandStart = -1000;
-	public static final int KillAllSound = -2;
+	public static final int ResetSystem = -2;
 	public static final int ActivePop = -3;
 	public static final int ActiveLive = -4;
 	public static final int KillActiveSound = -5;
+	public static final int SilenceActiveSound = -6;
 	//scrolling still needs to be implemented, but oh well.
 	public volatile boolean scrolling = false;
 	ArrayList<String> keys;
@@ -105,7 +106,7 @@ public class HSkeylist implements KeyListener {
 						System.out.println("move");
 						ss.fade(activeClip.get(activePos), activeInstance.get(activePos), command.t(), command.vol());
 					}
-				}else if(doing == KillAllSound){
+				}else if(doing == ResetSystem){
 					show.updateActive("Killing...");
 					ss.dearGodKillAllTheNoiseNow();
 					ss.reset();
@@ -123,7 +124,17 @@ public class HSkeylist implements KeyListener {
 					activePos = activeClip.size()-1;
 					show.updateActive(names.get(activeClip.get(activePos)) +"  "+activeInstance.get(activePos));
 				}else if(doing == KillActiveSound){
-					ss.setVolume(activeClip.get(activePos), activeInstance.get(activePos), 0);
+					ss.kill(activeClip.get(activePos), activeInstance.get(activePos));
+					activeClip.remove(activePos);
+					activeInstance.remove(activePos);
+					activePos--;
+					if(activePos!=-1){
+						show.updateActive(names.get(activeClip.get(activePos)) +"  "+activeInstance.get(activePos));
+					}else{
+						show.updateActive("none");
+						activePos++;
+					}
+					
 				}
 			}
 		}

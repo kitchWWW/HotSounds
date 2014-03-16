@@ -40,36 +40,20 @@ public class HSshowfile implements Serializable{
 		addtheStuff();
 	}
 	private void addtheStuff(){
-		if(!commands.contains("#kill")){
-			commands.add("#kill");
-			names.add("Kill");
-			keys.add("esc");
+		if(!commands.contains("#reset")){
+			commands.add("#reset");
+			names.add(commands.size()-1,"reset");
+			keys.add(commands.size()-1,"esc");
 		}
 		if(!commands.contains("#live")){
 			commands.add("#live");
-			names.add("Live");
-			keys.add("right");
+			names.add(commands.size()-1,"Live");
+			keys.add(commands.size()-1,"right");
 		}
 		if(!commands.contains("#last")){
 			commands.add("#last");
-			names.add("Last");
-			keys.add("left");
-		}
-		if(!commands.contains("#stop")){
-			commands.add("#stop");
-			names.add("Stop");
-			keys.add("s");
-		}
-		boolean needToAdd = true;;
-		for(String t: commands){
-			if(t.startsWith("#fade")){
-				needToAdd = false;
-			}
-		}
-		if(needToAdd){
-			commands.add("#fade");
-			names.add("Fade");
-			keys.add("down");
+			names.add(commands.size()-1,"Last");
+			keys.add(commands.size()-1,"left");
 		}
 	}
 	public ArrayList<String> getUrls() {
