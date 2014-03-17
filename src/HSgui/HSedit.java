@@ -57,7 +57,7 @@ public class HSedit {
 	Box fadebox = Box.createVerticalBox();
 	Box commandbox = Box.createVerticalBox();
 	Box playVolsbox = Box.createVerticalBox();
-	public static final String version = "1.4.1";
+	public static final String version = "1.4.2";
 	
 	public HSedit(HSshowfile showfile, String filePath){
 		

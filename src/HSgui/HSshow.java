@@ -40,12 +40,16 @@ public class HSshow {
 		for(String s: sf.getFadeUps()){
 			try{
 				fadeUps.add(Double.parseDouble(s));
-			}catch(Exception e){fadeUps.add(0.0);}
+			}catch(Exception e){
+				fadeUps.add(0.0);
+				totalErrors = totalErrors +"\n your fade up '" + s +"' is not kosher";}
 		}
 		for(String s:sf.getPlayVols()){
 			try{
 				playVols.add(Double.parseDouble(s));
-			}catch(Exception e){playVols.add(-1d);}
+			}catch(Exception e){
+				playVols.add(.7);
+				totalErrors = totalErrors +"\n your volume '" + s +"' is not kosher";}
 		}
 		ss = new HSsound();
 		ss.setMainURL(sf.getResPath());
@@ -70,13 +74,15 @@ public class HSshow {
 					d = Double.parseDouble(doubl);
 				}catch(Exception e){
 					d = 5;
+					if(!doubl.endsWith("#fade")){
+						totalErrors = totalErrors +"\n your fade up time '" + m +"' is not kosher";
+					}
 				}
 				HScommand com;
 				try {
 					com = new HScommand(d);
 				} catch (Exception e1) {
-					e1.printStackTrace();
-					System.out.println("You done give me a set of bad perams");
+					totalErrors = totalErrors +"\n something with peramiters broke:\n"+ e1.getMessage();
 					com = null;
 				}
 				commandsWithPerams.add(com);
@@ -91,6 +97,7 @@ public class HSshow {
 					d = Double.parseDouble(doubl);
 				}catch(Exception e){
 					d = 5;
+					totalErrors = totalErrors +"\n your move time '" + m +"' is not kosher";
 				}
 				String time = m.substring(m.indexOf("to:")+3);
 				double t;
@@ -98,6 +105,7 @@ public class HSshow {
 					t = Double.parseDouble(time);
 				}catch(Exception e){
 					t = .5;
+					totalErrors = totalErrors +"\n your volume '" + m +"' is not kosher";
 				}
 				HScommand com;
 				try {
@@ -111,6 +119,14 @@ public class HSshow {
 			try{
 				cn.add(ss.addClip(urls.get(i)));
 			}catch(Exception df){totalErrors = totalErrors+"\n" + df.getMessage();}
+		}
+		for(String s : keys){
+			ArrayList<String> temp = new ArrayList<>();
+			temp.addAll(keys);
+			temp.remove(s);
+			if(temp.contains(s)&&!totalErrors.contains("key actions for "+s)){
+				totalErrors = totalErrors + "\nYou have duplicate key actions for "+s;
+			}
 		}
 		if(!totalErrors.equals("")){
 			JOptionPane.showMessageDialog(null, "Show loaded with the following errors:\n"+totalErrors);
