@@ -12,6 +12,7 @@ public class HSkeylist implements KeyListener {
 	
 	HSsound ss;
 	public static final int CommandStart = -1000;
+	public static final int NullCommand = -1;
 	public static final int ResetSystem = -2;
 	public static final int ActivePop = -3;
 	public static final int ActiveLive = -4;
@@ -74,7 +75,7 @@ public class HSkeylist implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		try{
 		if(keyCodes.indexOf(e.getKeyCode())!=-1){
-			int doing = cn.get(keyCodes.indexOf(e.getKeyCode()));	
+			int doing = cn.get(keyCodes.indexOf(e.getKeyCode()));
 			if(doing>=0){
 				int d = (int)(fadeUps.get(doing)*1000);
 				double vol = (double)(playVols.get(doing));
@@ -134,7 +135,6 @@ public class HSkeylist implements KeyListener {
 						show.updateActive("none");
 						activePos++;
 					}
-					
 				}
 			}
 		}

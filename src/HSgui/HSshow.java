@@ -58,15 +58,15 @@ public class HSshow {
 		for(int i = 0; i<commands.size(); i++){
 			if(commands.get(i).startsWith("#live")){
 				cn.add(HSkeylist.ActiveLive);
-			}if(commands.get(i).startsWith("#last")){
+			}else if(commands.get(i).startsWith("#last")){
 				cn.add(HSkeylist.ActivePop);
-			}if(commands.get(i).startsWith("#kill")){
+			}else if(commands.get(i).startsWith("#kill")){
 				cn.add(HSkeylist.KillActiveSound);
-			}if(commands.get(i).startsWith("#mute")){
+			}else if(commands.get(i).startsWith("#mute")){
 				cn.add(HSkeylist.SilenceActiveSound);
-			}if(commands.get(i).startsWith("#reset")){
+			}else if(commands.get(i).startsWith("#reset")){
 				cn.add(HSkeylist.ResetSystem);
-			}if(commands.get(i).startsWith("#fade")){
+			}else if(commands.get(i).startsWith("#fade")){
 				String m = commands.get(i);
 				String doubl = m.substring(m.indexOf(":")+1);
 				double d;
@@ -82,13 +82,13 @@ public class HSshow {
 				try {
 					com = new HScommand(d);
 				} catch (Exception e1) {
+					e1.printStackTrace();
 					totalErrors = totalErrors +"\n something with peramiters broke:\n"+ e1.getMessage();
 					com = null;
 				}
 				commandsWithPerams.add(com);
 				cn.add(HSkeylist.CommandStart - Math.abs(commandsWithPerams.indexOf(com)));
-			}
-			if(commands.get(i).startsWith("#move")){
+			}else if(commands.get(i).startsWith("#move")){
 				String m = commands.get(i);
 				String doubl = m.substring(m.indexOf(":")+1);
 				doubl = doubl.substring(0, doubl.indexOf(" to:"));
@@ -113,21 +113,24 @@ public class HSshow {
 				} catch (Exception e1) {e1.printStackTrace(); com = null;}
 				commandsWithPerams.add(com);
 				cn.add(HSkeylist.CommandStart - Math.abs(commandsWithPerams.indexOf(com)));
-			}	
+			}else{
+				totalErrors = totalErrors +"\n" + commands.get(i)+" is not a valid command";
+				cn.add(HSkeylist.NullCommand);
+			}
 		}
 		for(int i = 0; i< urls.size(); i++){
 			try{
 				cn.add(ss.addClip(urls.get(i)));
 			}catch(Exception df){totalErrors = totalErrors+"\n" + df.getMessage();}
 		}
-		for(String s : keys){
+		/**for(String s : keys){
 			ArrayList<String> temp = new ArrayList<>();
 			temp.addAll(keys);
 			temp.remove(s);
 			if(temp.contains(s)&&!totalErrors.contains("key actions for "+s)){
 				totalErrors = totalErrors + "\nYou have duplicate key actions for "+s;
 			}
-		}
+		}**/
 		if(!totalErrors.equals("")){
 			JOptionPane.showMessageDialog(null, "Show loaded with the following errors:\n"+totalErrors);
 		}
