@@ -97,6 +97,11 @@ public class HSsound {
 		playing.set(clipNumber,playing.get(clipNumber)+1);
 		return clips.get(clipNumber).newPlayFadeIn(millis, vol);
 	}
+	public double checkVolume(int clipNumber, int instanceNumber){
+		checkClip(clipNumber,instanceNumber);
+		double rawVol = clips.get(clipNumber).gainControl.get(instanceNumber).getValue();
+		return HSvolume.unCalcVol(rawVol);
+	}
 	public void setVolume(int clipNumber,double volume){
 		checkClip(clipNumber);
 		checkVol(volume);

@@ -18,7 +18,7 @@ public class HSkeylist implements KeyListener {
 	public static final int ActiveLive = -4;
 	public static final int KillActiveSound = -5;
 	public static final int SilenceActiveSound = -6;
-	//scrolling still needs to be implemented, but oh well.
+	public static final int ScrollingActiveSound = -7;
 	public volatile boolean scrolling = false;
 	ArrayList<String> keys;
 	ArrayList<Integer> cn;
@@ -135,6 +135,8 @@ public class HSkeylist implements KeyListener {
 						show.updateActive("none");
 						activePos++;
 					}
+				}else if(doing == ScrollingActiveSound){
+					scrolling = true;
 				}
 			}
 		}
@@ -143,5 +145,28 @@ public class HSkeylist implements KeyListener {
 			exc.printStackTrace();
 		}
 	}
-	public void keyReleased(KeyEvent e) {}
+	public void keyReleased(KeyEvent e) {
+		if(keyCodes.indexOf(e.getKeyCode())!=-1){
+			int doing = cn.get(keyCodes.indexOf(e.getKeyCode()));
+			if(doing == ScrollingActiveSound){
+				scrolling = false;
+			}
+		}
+	}
+	
+	public int activeInstance(){
+		try{
+			return activeInstance.get(activePos);
+		}catch(Exception e){
+			return -1;
+		}
+		
+	}
+	public int activeClip(){
+		try{
+			return activeClip.get(activePos);
+		}catch(Exception e){
+			return -1;
+		}
+	}
 }

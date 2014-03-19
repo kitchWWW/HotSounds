@@ -57,7 +57,7 @@ public class HSedit {
 	Box fadebox = Box.createVerticalBox();
 	Box commandbox = Box.createVerticalBox();
 	Box playVolsbox = Box.createVerticalBox();
-	public static final String version = "1.4.4";
+	public static final String version = "1.5.0";
 	
 	public HSedit(HSshowfile showfile, String filePath){
 		
@@ -340,32 +340,32 @@ public class HSedit {
 		for(Component name: namebox.getComponents()){
 			try{
 				na.add(((JTextField) name).getText());
-			}catch(Exception e1){e1.printStackTrace();}
+			}catch(Exception e1){}
 		}
 		for(Component url: urlbox.getComponents()){
 			try{
 				ur.add(((JTextField) url).getText());
-			}catch(Exception e1){e1.printStackTrace();}
+			}catch(Exception e1){}
 		}
 		for(Component key: keybox.getComponents()){
 			try{
 				ke.add(((JTextField) key).getText());
-			}catch(Exception e1){e1.printStackTrace();}
+			}catch(Exception e1){}
 		}
 		for(Component fade: fadebox.getComponents()){
 			try{
 				fa.add(((JTextField) fade).getText());
-			}catch(Exception e1){e1.printStackTrace();}
+			}catch(Exception e1){}
 		}
 		for(Component command: commandbox.getComponents()){
 			try{
 				co.add(((JTextField) command).getText());
-			}catch(Exception e1){e1.printStackTrace();}
+			}catch(Exception e1){}
 		}
 		for(Component pvs: playVolsbox.getComponents()){
 			try{
 				pv.add(((JTextField) pvs).getText());
-			}catch(Exception e1){e1.printStackTrace();}
+			}catch(Exception e1){}
 		}
 		sf.update(ur,ke,na, fa, co,pv,respath);
 	}

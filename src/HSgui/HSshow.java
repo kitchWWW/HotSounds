@@ -113,6 +113,8 @@ public class HSshow {
 				} catch (Exception e1) {e1.printStackTrace(); com = null;}
 				commandsWithPerams.add(com);
 				cn.add(HSkeylist.CommandStart - Math.abs(commandsWithPerams.indexOf(com)));
+			}else if(commands.get(i).startsWith("#scroll")){
+				cn.add(HSkeylist.ScrollingActiveSound);
 			}else{
 				totalErrors = totalErrors +"\n" + commands.get(i)+" is not a valid command";
 				cn.add(HSkeylist.NullCommand);
@@ -219,7 +221,10 @@ public class HSshow {
 		main.add(bigger, BorderLayout.CENTER);
 		main.add(showedit, BorderLayout.SOUTH);
 	//then add the thing to make the entire thing work:	
-		showedit.addKeyListener(new HSkeylist(ss,cn,keys,this,names,fadeUps,playVols,commandsWithPerams));
+		HSkeylist kl = new HSkeylist(ss,cn,keys,this,names,fadeUps,playVols,commandsWithPerams);
+		HSMouseWheelList mwl = new HSMouseWheelList(ss,kl);
+		showedit.addKeyListener(kl);
+		big.addMouseWheelListener(mwl);
 		main.setLocation(150,150);
 		main.pack();
 		main.setVisible(true);
