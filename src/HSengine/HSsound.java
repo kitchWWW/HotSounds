@@ -17,7 +17,7 @@ public class HSsound {
 	ArrayList<Integer> playing;
 	volatile double GrandMaster;			//volume, between 0 and 1
 	String file;
-	String version = "1.0.5";
+	String version = "1.0.6";
 	
 	public HSsound(){
 		GrandMaster = 1;
@@ -26,7 +26,6 @@ public class HSsound {
 		MinVolume = -80f;
 		MaxVolume = 6.0206f;
 		file = "";
-		//figure out how to actually play things
 	}
 	public void setMainURL(String url){
 		file = url;
@@ -125,6 +124,11 @@ public class HSsound {
 		checkClip(clipNumber,instanceNumber);
 		clips.get(clipNumber).kill(instanceNumber);
 	}
+	public void reset(int clipNumber){
+		checkClip(clipNumber);
+		clips.get(clipNumber).reset();
+		playing.set(clipNumber,0);
+	}
 	private void checkClip(int clipNumber) {
 		if(clipNumber>=clips.size()||clipNumber<0){
 			throw new IndexOutOfBoundsException();}
@@ -139,7 +143,6 @@ public class HSsound {
 		if(vol<0||vol>1){
 			throw new IndexOutOfBoundsException();}
 	}
-	
 	public void dearGodKillAllTheNoiseNow(){
 		for(int i = clips.size()-1; i>=0; i--){
 			for(int j = playing.get(i)-1; j>=0;j--){
@@ -147,7 +150,6 @@ public class HSsound {
 			}
 		}
 	}
-	
 	public void reset(){
 		dearGodKillAllTheNoiseNow();
 		playing = new ArrayList<>();

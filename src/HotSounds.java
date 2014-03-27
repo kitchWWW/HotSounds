@@ -1,3 +1,5 @@
+import DKgui.DKedit;
+import DKgui.DKshowfile;
 import HSgui.HSedit;
 import HSgui.HSshowfile;
 
@@ -16,6 +18,9 @@ public class HotSounds {
 		}
 		if(i==2){
 			new example();
+		}
+		if(i==3){
+			new DKedit(new DKshowfile(),"");
 		}
 	}
 

@@ -11,7 +11,7 @@
  * Yes, this is an unlicensed license.
  * Coppyright 2014
  */
-package HSgui;
+package DKgui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -28,8 +28,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
-
-public class HSedit {
+public class DKedit {
 	
 	JFrame main;
 	Box big;
@@ -39,27 +38,23 @@ public class HSedit {
 	String myFilePath;
 	ArrayList<String> urls;
 	ArrayList<String> fadeUps;
-	ArrayList<String> commands;
 	ArrayList<String> keys;
-	ArrayList<String> names;
 	ArrayList<String> fadeUp;
 	ArrayList<String> playVols;
 	int x;
 	int y;
-	HSshowfile sf;
+	DKshowfile sf;
 	String respath;
-	HSedit me;
-	Box namebox = Box.createVerticalBox();
+	DKedit me;
 	Box keybox = Box.createVerticalBox();
 	Box contentbox = Box.createVerticalBox();
 	Box sounds = Box.createHorizontalBox();
 	Box urlbox = Box.createVerticalBox();
 	Box fadebox = Box.createVerticalBox();
-	Box commandbox = Box.createVerticalBox();
 	Box playVolsbox = Box.createVerticalBox();
-	public static final String version = "1.5.1";
+	public static final String version = "0.0.1";
 	
-	public HSedit(HSshowfile showfile, String filePath){
+	public DKedit(DKshowfile showfile, String filePath){
 		
 	//Initialize a bunch of stuff
 		me = this;
@@ -67,11 +62,9 @@ public class HSedit {
 		respath = sf.getResPath();
 		urls = sf.getUrls();
 		fadeUps = sf.getFadeUps();
-		commands = sf.getCommands();
 		keys = sf.getKeys();
-		names = sf.getNames();
 		playVols = sf.getPlayVols();
-		main = new JFrame("HS Show Editor V-" + HSedit.version);
+		main = new JFrame("HS DrumKit V-" + DKedit.version);
 		big = Box.createVerticalBox();
 		editArea = Box.createHorizontalBox();
 		editAreaSP = new JScrollPane(editArea);
@@ -92,18 +85,14 @@ public class HSedit {
 	//The edit menu parts	
 		JMenuItem addSoundMenuItem = new JMenuItem("Add Sound");
 		JMenuItem addCommandMenuItem = new JMenuItem("Add Command");
-		JMenuItem removeEmptyMenuItem = new JMenuItem("Remove Empties");
 	//The show menu parts	
 		JMenuItem goToShow = new JMenuItem("Goto Show");
-		JMenuItem help = new JMenuItem("Help");
 	//And give them all hot keys, sort of...	
 		if(System.getProperty("os.name").startsWith("Mac")){
 			newShow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.META_MASK));
 			loadShow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.META_MASK));
 			saveShow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.META_MASK));
 			addSoundMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_J, ActionEvent.META_MASK));
-			addCommandMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K, ActionEvent.META_MASK));
-			removeEmptyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.META_MASK));
 			goToShow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.META_MASK));
 			closeShow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.META_MASK));
 		}
@@ -112,8 +101,6 @@ public class HSedit {
 			loadShow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 			saveShow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 			addSoundMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_J, ActionEvent.CTRL_MASK));
-			addCommandMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K, ActionEvent.CTRL_MASK));
-			removeEmptyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
 			goToShow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
 			closeShow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
 		}
@@ -127,9 +114,7 @@ public class HSedit {
 		fileMenu.add(setShowFile);
 		editMenu.add(addSoundMenuItem);
 		editMenu.add(addCommandMenuItem);
-		editMenu.add(removeEmptyMenuItem);
 		showMenu.add(goToShow);
-		showMenu.add(help);
 		jmb.add(fileMenu);
 		jmb.add(editMenu);
 		jmb.add(showMenu);
@@ -137,7 +122,7 @@ public class HSedit {
 	//and make the menu bar actualy do stuff	
 		newShow.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				new HSedit(new HSshowfile(),null);
+				new DKedit(new DKshowfile(),null);
 			}
 		});
 		saveAsShow.addActionListener(new ActionListener(){
@@ -146,22 +131,17 @@ public class HSedit {
 				int retval = chooser.showSaveDialog(null);
 				updateSF();
 				if(retval==JFileChooser.APPROVE_OPTION){
-					File f = new File(chooser.getSelectedFile().getAbsolutePath()+".hssf");
+					File f = new File(chooser.getSelectedFile().getAbsolutePath()+".hsdk");
 					myFilePath = f.getAbsolutePath();
 					me.save();
 				}
-			}
-		});
-		help.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				new HShelp();
 			}
 		});
 		goToShow.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				updateSF();
 				main.dispose();
-				new HSshow(sf,myFilePath);
+				new DKshow(sf,myFilePath);
 			}
 		});
 		setShowFile.addActionListener(new ActionListener(){
@@ -181,25 +161,25 @@ public class HSedit {
 				JFileChooser chooser = new JFileChooser();
 				chooser.setFileFilter(new FileFilter(){
 					public boolean accept(File f) {
-						if(f.getAbsolutePath().endsWith(".hssf")){
+						if(f.getAbsolutePath().endsWith(".hsdk")){
 							return true;
 						}
 						return false;
 					}
 					public String getDescription() {
-						return "only .hssf";
+						return "only .hsdk";
 					}
 					
 				});
 			    int returnVal = chooser.showOpenDialog(null);
 			    if(returnVal == JFileChooser.APPROVE_OPTION) {
 			    	try{
-			    		HSshowfile m;
+			    		DKshowfile m;
 			    		FileInputStream fos = new FileInputStream(chooser.getSelectedFile());
 				        ObjectInputStream oos = new ObjectInputStream(fos);
-				        m = (HSshowfile) oos.readObject();
+				        m = (DKshowfile) oos.readObject();
 				        main.dispose();
-				        new HSedit(m,chooser.getSelectedFile().getAbsolutePath());
+				        new DKedit(m,chooser.getSelectedFile().getAbsolutePath());
 				        oos.close();
 			    	}catch( Exception fd){
 			    		JOptionPane.showMessageDialog(null, "Something broke, sorry... \n\n" + fd.getMessage());
@@ -216,7 +196,7 @@ public class HSedit {
 					JFileChooser chooser = new JFileChooser();
 					int retval = chooser.showSaveDialog(null);
 					if(retval==JFileChooser.APPROVE_OPTION){
-						File f = new File(chooser.getSelectedFile().getAbsolutePath()+".hssf");
+						File f = new File(chooser.getSelectedFile().getAbsolutePath()+".hsdk");
 						myFilePath = f.getAbsolutePath();
 						me.save();
 					}
@@ -228,17 +208,9 @@ public class HSedit {
 				main.dispose();
 			}
 		});
-		addCommandMenuItem.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				namebox.add(new JTextField(),commandbox.getComponentCount()+1);
-				keybox.add(new JTextField(),commandbox.getComponentCount()+1);
-				commandbox.add(new JTextField());
-				main.pack();
-			}
-		});
+		
 		addSoundMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				namebox.add(new JTextField());
 				urlbox.add(new JTextField());
 				fadebox.add(new JTextField());
 				playVolsbox.add(new JTextField(""));
@@ -246,35 +218,21 @@ public class HSedit {
 				main.pack();
 			}
 		});
-		removeEmptyMenuItem.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				removeEmpties();
-			}
-		});
 	//put together the edit area
 	//but first initialize the stuff to the bigger box
-		editArea.add(namebox);
 		editArea.add(keybox);
 		editArea.add(contentbox);
 		
 	//now we can actually do stuff :D meaning we put the data in once we load things(?)
-		namebox.add(new JLabel("Name"));
 		keybox.add(new JLabel(" Key "));
-		contentbox.add(new JLabel("Commands : URL / fade / Vol"));
+		contentbox.add(new JLabel("    URL / fade / Vol      "));
 	// and we should add some more stuff
-		contentbox.add(commandbox);
 		contentbox.add(sounds);
 		sounds.add(urlbox);
 		sounds.add(fadebox);
 		sounds.add(playVolsbox);
-		for(String n:names){
-			namebox.add(new JTextField(n));
-		}
 		for(String f: fadeUps){
 			fadebox.add(new JTextField(f));
-		}
-		for(String c: commands){
-			commandbox.add(new JTextField(c));
 		}
 		for(String u:urls){
 			urlbox.add(new JTextField(u));
@@ -288,60 +246,17 @@ public class HSedit {
 	//and put it all in the screen	
 		big.add(editAreaSP);
 		main.add(big, BorderLayout.CENTER);
-		main.pack();
 		main.setLocation(100, 100);
+		main.pack();
 		main.setVisible(true);
 	}
-	protected void removeEmpties(){
-		for(int i = 1; i<namebox.getComponentCount(); i++){
-			JTextField nam = (JTextField) namebox.getComponent(i);
-			JTextField key = (JTextField) keybox.getComponent(i);
-			if(nam.getText().length()==0&& key.getText().length()==0){
-				if(i<=commandbox.getComponentCount()){
-					JTextField h = (JTextField) commandbox.getComponent(i-1);
-					if(h.getText().length()==0){
-						//remove some stuff
-						namebox.remove(i);
-						keybox.remove(i);
-						commandbox.remove(i-1);
-						i = 1;
-						main.pack();
-					}
-				}else{
-					if(urlbox.getComponentCount()>0){
-						int numb = commandbox.getComponentCount();
-						numb++;
-						JTextField as = (JTextField) urlbox.getComponent(i-numb);
-						JTextField sd = (JTextField) fadebox.getComponent(i-numb);
-						JTextField df = (JTextField) playVolsbox.getComponent(i-numb);
-						if(as.getText().length()==0 && sd.getText().length()==0 && df.getText().length()==0){
-							//remove the other stuff
-							namebox.remove(i);
-							keybox.remove(i);
-							urlbox.remove(i-numb);
-							fadebox.remove(i-numb);
-							playVolsbox.remove(i-numb);
-							i=1;
-							main.pack();
-						}
-					}
-				}
-			}
-		}
-	}
 	protected void updateSF(){
-		removeEmpties();
 		ArrayList<String> na = new ArrayList<>();
 		ArrayList<String> ur = new ArrayList<>();
 		ArrayList<String> ke = new ArrayList<>();
 		ArrayList<String> fa = new ArrayList<>();
 		ArrayList<String> co = new ArrayList<>();
 		ArrayList<String> pv = new ArrayList<>();
-		for(Component name: namebox.getComponents()){
-			try{
-				na.add(((JTextField) name).getText());
-			}catch(Exception e1){}
-		}
 		for(Component url: urlbox.getComponents()){
 			try{
 				ur.add(((JTextField) url).getText());
@@ -355,11 +270,6 @@ public class HSedit {
 		for(Component fade: fadebox.getComponents()){
 			try{
 				fa.add(((JTextField) fade).getText());
-			}catch(Exception e1){}
-		}
-		for(Component command: commandbox.getComponents()){
-			try{
-				co.add(((JTextField) command).getText());
 			}catch(Exception e1){}
 		}
 		for(Component pvs: playVolsbox.getComponents()){

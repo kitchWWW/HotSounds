@@ -39,14 +39,24 @@ public class HSshow {
 		commandsWithPerams =  new ArrayList<>();
 		for(String s: sf.getFadeUps()){
 			try{
-				fadeUps.add(Double.parseDouble(s));
+				Double d = Double.parseDouble(s);
+				if(d<0||d>1000){
+					d = 5.0;
+					totalErrors = totalErrors +"\n your fade up time '" + d +"' is not kosher";
+				}
+				fadeUps.add(d);
 			}catch(Exception e){
 				fadeUps.add(0.0);
 				totalErrors = totalErrors +"\n your fade up '" + s +"' is not kosher";}
 		}
 		for(String s:sf.getPlayVols()){
 			try{
-				playVols.add(Double.parseDouble(s));
+				Double d = Double.parseDouble(s);
+				if(d<0||d>1){
+					d = .7;
+					totalErrors = totalErrors +"\n your volume '" + d +"' is not kosher";
+				}
+				playVols.add(d);
 			}catch(Exception e){
 				playVols.add(.7);
 				totalErrors = totalErrors +"\n your volume '" + s +"' is not kosher";}
@@ -72,6 +82,10 @@ public class HSshow {
 				double d;
 				try{
 					d = Double.parseDouble(doubl);
+					if(d<0||d>1000){
+						d = 5;
+						totalErrors = totalErrors +"\n your fade up time '" + m +"' is not kosher";
+					}
 				}catch(Exception e){
 					d = 5;
 					if(!doubl.endsWith("#fade")){
