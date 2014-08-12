@@ -30,4 +30,4 @@ which is nearly impossible on a CD player, and iTunes for that matter. Using Hot
 
 Please let me know what you think of this project!
 
-*This is designed for small theaters, meaning that I don't want to try to get into microphones and balancing and etc.
+*This is designed for small theaters, meaning microphones are unnessisary and balancing between Left and Right speakers is not important. Might come in the future though!
