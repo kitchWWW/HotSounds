@@ -2,31 +2,33 @@ HotSounds
 =========
 The HotSounds Show System is a sound application designed to put sounds from your computer at your finger tips. It initially was designed for theater students who need an easy and quick way to:
 
-  gunshot
+  *play dramatic music
+  
+  *gunshot
 
-  different gunshot
+  *different gunshot
 
-  doorbell
+  *doorbell
 
-  first gunshot
+  *first gunshot
 
-  play music and fade out
+  *fade out music
 
 which is nearly impossible on a CD player, and iTunes for that matter. Using HotSounds, playing these sounds is as simple as:
 
-  press g
+  *press m
 
-  press h
+  *press g
 
-  press d
+  *press h
 
-  press g
+  *press d
 
-  press m
+  *press g
 
-  <wait for a little while until you want the fade out to start>
+  *press m
 
-  press down arrow
+  *press down arrow
 
 This application accomplishes these tasks using the Java Audio classes, so there is an unfortunate ~.25sec delay between asking a sound to go quiet or change, and that change happening. (Sounds do play instantly, however)
 
