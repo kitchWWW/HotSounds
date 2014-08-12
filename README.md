@@ -28,8 +28,6 @@ which is nearly impossible on a CD player, and iTunes for that matter. Using Hot
 
   *press down arrow
 
-This application accomplishes these tasks using the Java Audio classes, so there is an unfortunate ~.25sec delay between asking a sound to go quiet or change, and that change happening. (Sounds do play instantly, however)
-
 Please let me know what you think of this project!
 
 *This is designed for small theaters, meaning that I don't want to try to get into microphones and balancing and etc.
