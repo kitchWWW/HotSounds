@@ -1,6 +1,6 @@
 HotSounds
 =========
-The HotSounds Show System is a sound application do-hicky designed to put sounds from your computer at your finger tips. It initially was designed for theater students who need an easy and quick way to:
+The HotSounds Show System is a sound application designed to put sounds from your computer at your finger tips. It initially was designed for theater students who need an easy and quick way to:
   *gunshot*
   *different gunshot*
   *doorbell*
